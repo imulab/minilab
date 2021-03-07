@@ -1,0 +1,16 @@
+apt:
+  # Ubuntu release name: [bionic|focal]
+  release: bionic
+
+ingress:
+  tls:
+    # Let's encrypt contact email for applying TLS certificates
+    email: foo@example.org
+  
+  minio:
+    # Installs minio reverse proxy when true
+    enabled: yes
+    # Host name of minio service
+    host: minio.example.org
+    # SSH tunnel port on the ingress node
+    tunnel_port: 9000

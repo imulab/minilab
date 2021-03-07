@@ -1,0 +1,7 @@
+---
+- hosts: ingress
+  remote_user: root
+  roles:
+    - role: 'roles/apt-source-cn'  
+    - role: 'roles/ingress'
+        

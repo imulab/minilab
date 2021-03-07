@@ -6,9 +6,9 @@ Set Ubuntu apt source to Aliyun source in order to speed up `apt-get` operations
 Role Variables
 --------------
 
-| Name | Values | Note |
-| --- | --- | --- |
-| `release` | `[bionic|focal]` | Install apt source respective to the release name |
+| Name | Note |
+| --- | --- |
+| `apt.release` | `bionic|focal` |
 
 Example Playbook
 ----------------

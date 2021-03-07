@@ -1,0 +1,8 @@
+---
+ingress:
+  tls:
+    email: foo@bar.com
+  minio:
+    enabled: yes
+    host: minio.example.org
+    tunnel_port: 9000

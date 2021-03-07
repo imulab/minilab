@@ -67,8 +67,20 @@ public IP address allocated by the ISP, for more security.
 
 ## Setup
 
-The setup process is ordered by their respective dependencies:
+The setup process is ordered by their respective dependencies.
 
-1. [Ingress](01-ingress)
-2. [Tunnel](02-tunnel)
-3. [Minio](03-minio)
+### Ingress
+
+The ingress VM is the inception component and is responsible for reverse proxying public traffic onto private local ports. These local ports are supposed to be connected by the private tunnel VM via SSH tunnel. In addition, it also leverages Let's Encrypt to serve automatic TLS.
+
+```
+cd ansible
+
+# fill out these two files
+cp hosts.example.ini hosts.ini
+cp values.example.yml values.yml
+
+ansible-playbook ingress.yaml -i hosts.ini -e @values.yml
+```
+
+### Tunnel

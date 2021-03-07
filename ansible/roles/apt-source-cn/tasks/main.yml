@@ -6,13 +6,13 @@
     remote_src: yes
 
 - name: copy_aliyun_bionic_source
-  when: release == 'bionic'
+  when: apt.release == 'bionic'
   copy:
     src: bionic.sources.list
     dest: /etc/apt/sources.list
 
 - name: copy_aliyun_focal_source
-  when: release == 'focal'
+  when: apt.release == 'focal'
   copy:
     src: focal.sources.list
     dest: /etc/apt/sources.list
