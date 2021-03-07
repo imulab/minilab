@@ -1,2 +1,2 @@
-ansible/roles/values.yml
-ansible/roles/hosts.ini
+ansible/values.yml
+ansible/hosts.ini

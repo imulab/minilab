@@ -1,0 +1,23 @@
+---
+- name: set_authorized_keys
+  authorized_key:
+    user: "{{ ssh.user }}"
+    state: present
+    key: "{{ item }}"
+  with_file: "{{ ssh.authorized_key_paths }}"
+  when: (ssh.authorized_key_paths is defined) and (ssh.authorized_key_paths | length > 0)
+
+- name: set_private_key
+  file:
+    src: "{{ ssh.private_key_path }}"
+    dest: "/root/.ssh/id_rsa"
+    mode: "0600"
+  when: (ssh.private_key_path is defined) and (ssh.private_key_path != "")
+
+- name: set_known_hosts
+  known_hosts:
+    name: "{{ item.name }}"
+    key: "{{ lookup('file', item.public_key_path) }}"
+    state: present
+  with_items: "{{ ssh.known_hosts }}"
+  when: (ssh.known_hosts is defined) and (ssh.known_hosts | length > 0)

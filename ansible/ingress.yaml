@@ -4,4 +4,9 @@
   roles:
     - role: 'roles/apt-source-cn'  
     - role: 'roles/ingress'
-        
+    - role: 'roles/ssh'
+      vars:
+        ssh:
+          user: root
+          authorized_key_paths:
+            - "{{ tunnel.ssh.public_key_path }}"

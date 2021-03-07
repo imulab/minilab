@@ -82,5 +82,3 @@ cp values.example.yml values.yml
 
 ansible-playbook ingress.yaml -i hosts.ini -e @values.yml
 ```
-
-### Tunnel
