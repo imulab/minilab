@@ -1,0 +1,17 @@
+---
+ingress_config:
+  # Name of the conf file to put in /etc/nginx/conf.d
+  name: "unnamed"
+  # Name of the nginx virtual server
+  server_name: "example.org"
+  # Destination to proxy traffic to
+  proxy_pass: ":8080"
+  opts:
+    global: []
+    paths: {}
+
+  tls:
+    # Will setup let's encrypt auto tls when enabled
+    enabled: false
+    # Email to register with let's encrypt for notification
+    email: "foo@example.org"

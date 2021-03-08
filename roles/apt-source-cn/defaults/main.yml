@@ -1,0 +1,7 @@
+---
+# Release name for Ubuntu server. Acceptable values are
+# - bionic
+# - focal
+apt:
+  release: bionic
+

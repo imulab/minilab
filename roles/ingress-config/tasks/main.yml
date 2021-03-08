@@ -1,0 +1,12 @@
+---
+- name: render_config
+  template:
+    src: conf.j2
+    dest: "/etc/nginx/conf.d/{{ ingress_config.name }}.conf"
+    mode: "0644"
+  notify: restart_nginx
+
+- name: enable_tls
+  when: ingress_config.tls.enabled
+  command:
+    cmd: certbot --nginx -d {{ ingress_config.server_name }} -m {{ ingress_config.tls.email }} --agree-tos -n

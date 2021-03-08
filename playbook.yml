@@ -1,0 +1,56 @@
+---
+- hosts: ingress
+  tags: 
+    - step1
+  roles:
+    - role: 'roles/apt-source-cn'
+    - role: 'roles/acme-reverse-proxy'
+    - role: 'roles/ingress-config'
+      vars:
+        ingress_config: "{{ minio.ingress_config }}"
+
+- hosts: tunnel
+  tags:
+    - step2
+  roles:
+    - role: 'roles/apt-source-cn'
+  tasks:
+    # =====================================================
+    # Fetch tunnel's public ssh key, generate if not exists
+    # =====================================================
+    - name: check_if_ssh_key_pair_exists
+      stat:
+        path: /root/.ssh/id_rsa
+      register: id_rsa_stat_result
+    - name: generate_ssh_key_pair
+      openssh_keypair:
+        path: /root/.ssh/id_rsa
+        size: 4096
+      when: not id_rsa_stat_result.stat.exists
+    - name: download_public_ssh_key
+      fetch:
+        src: /root/.ssh/id_rsa.pub
+        dest: /tmp/tunnel_id_rsa.pub
+        flat: yes
+
+- hosts: ingress
+  tags:
+    - step3
+  tasks:
+    # =================================
+    # Authorize tunnel's public ssh key
+    # =================================
+    - name: check_if_tunnel_ssh_is_fetched
+      local_action: stat path=/tmp/tunnel_id_rsa.pub  
+      register: tunnel_ssh_key_state_result
+    - name: authorize_tunnel_ssh_access
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ item  }}"
+      with_file:
+        - /tmp/tunnel_id_rsa.pub
+      when: tunnel_ssh_key_state_result.stat.exists
+    - name: clean_up_tunnel_ssh_key
+      local_action: file path=/tmp/tunnel_id_rsa.pub state=absent
+      when: tunnel_ssh_key_state_result.stat.exists

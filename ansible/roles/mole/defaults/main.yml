@@ -1,7 +1,0 @@
----
-mole:
-  # <ingress_ssh_user>@<ingress_ip>
-  ingress: ""
-  tunnels: []
-    # - source: ":<ingress_local_port>"
-    #   destination: "<service_ip>:<service_port>"

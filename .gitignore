@@ -1,2 +1,2 @@
-ansible/values.yml
-ansible/hosts.ini
+values.yml
+hosts.ini

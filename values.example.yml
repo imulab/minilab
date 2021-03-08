@@ -1,0 +1,24 @@
+ingress:
+  # Release name for Ubuntu based operating system.
+  # Valid values are [bionic|focal]
+  # This selects the corresponding Aliyun /etc/apt/sources.list
+  ubuntu: bionic
+  # Public ip address
+  address: "114.55.144.244"  
+
+minio:
+  ingress:
+    # Public domain name for the minio service
+    server_name: minio.example.org
+    # Reverse proxy destination
+    proxy_pass: http://localhost:9000
+    acme:
+      # Email to register for Let's encrypt
+      email: foo@example.org
+  
+  tunnel:
+    # Ingress server source, corresponds to minio.ingress.proxy_pass
+    source: ":9000"
+    # Local tunnel destination, where minio listens for LAN traffic
+    destination: "192.168.88.21:9000"
+    

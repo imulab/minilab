@@ -1,0 +1,17 @@
+---
+- name: install_software
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - nginx
+    - certbot
+    - python-certbot-nginx
+
+- name: configure_tls_auto_renew
+  cron:
+    name: renew_tls
+    hour: "12"
+    minute: "0"
+    job: "/usr/bin/certbot renew --quiet"
+    state: present

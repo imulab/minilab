@@ -1,0 +1,22 @@
+---
+- name: backup_source
+  copy:
+    src: /etc/apt/sources.list
+    dest: /etc/apt/sources.list.bak
+    remote_src: yes
+
+- name: copy_aliyun_bionic_source
+  when: apt.release == 'bionic'
+  copy:
+    src: bionic.sources.list
+    dest: /etc/apt/sources.list
+
+- name: copy_aliyun_focal_source
+  when: apt.release == 'focal'
+  copy:
+    src: focal.sources.list
+    dest: /etc/apt/sources.list
+
+- name: update_apt_cache
+  apt:
+    update_cache: yes

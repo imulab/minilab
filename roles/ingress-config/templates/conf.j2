@@ -1,0 +1,16 @@
+server {
+	server_name {{ ingress_config.server_name }};
+
+    {% for it in ingress_config.opt.global %}
+    {{ it }}
+    {% endfor %}
+
+    {% for path in ingress_config.opt.paths.keys() %}
+    location {{ path }} {
+        {% for it in ingress_config.opt.paths[path] %}
+        {{ it }}
+        {% endfor %}
+        proxy_pass {{ ingress_config.proxy_pass }};
+    }
+    {% endfor %}
+}

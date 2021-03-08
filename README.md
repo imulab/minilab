@@ -47,6 +47,8 @@ Unless otherwise specified, the following software and their respecitve versions
 
 Although it is desired to automate the setup process as much as possible. There are always aspects of the stack that is not cost effective to build automatically. The following tasks may need to be performed manually beforehand.
 
+### Pre
+
 <h4>Ingress VM</h4>
 
 - [x] Ensure the VM purchased from the cloud provider has a public IP address.
@@ -65,20 +67,18 @@ public IP address allocated by the ISP, for more security.
 
 - [x] Configure the DHCP range of the router to `X.X.X.240 - X.X.X.254` so we can allocate the IPs before it statically.
 
-## Setup
+### Provision
 
-The setup process is ordered by their respective dependencies.
-
-### Ingress
-
-The ingress VM is the inception component and is responsible for reverse proxying public traffic onto private local ports. These local ports are supposed to be connected by the private tunnel VM via SSH tunnel. In addition, it also leverages Let's Encrypt to serve automatic TLS.
+### Configuration
 
 ```
-cd ansible
-
 # fill out these two files
 cp hosts.example.ini hosts.ini
 cp values.example.yml values.yml
 
-ansible-playbook ingress.yaml -i hosts.ini -e @values.yml
+# add -l to further limit hosts
+# add -t to further select tasks by tags
+ANSIBLE_HASH_BEHAVIOUR=merge ansible-playbook playbook.yml -i hosts.ini -e @values.yml
 ```
+
+### Post
