@@ -1,0 +1,49 @@
+---
+- name: create_minio_user
+  user:
+    name: minio-user
+    create_home: no
+    system: yes
+    shell: /sbin/nologin
+    state: present
+
+- name: download_minio_executable
+  get_url:
+    url: "http://dl.minio.org.cn/server/minio/release/linux-amd64/minio"
+    dest: /usr/local/bin/minio
+    mode: "0744"
+
+- name: own_minio_executable
+  file:
+    path: /usr/local/bin/minio
+    owner: minio-user
+    group: minio-user
+    mode: '0744'
+
+- name: own_support_directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: minio-user
+    group: minio-user
+  loop:
+    - /usr/local/share/minio
+    - /etc/minio
+
+- name: render_minio_config
+  template:
+    src: minio.j2
+    dest: /etc/default/minio
+
+- name: install_minio_service
+  copy:
+    src: minio.service
+    dest: /etc/systemd/system/minio.service
+
+- name: start_minio
+  systemd:
+    name: minio
+    enabled: yes
+    state: started
+    daemon-reload: true
+

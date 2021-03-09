@@ -61,3 +61,11 @@
     - name: clean_up_tunnel_ssh_key
       local_action: file path=/tmp/tunnel_id_rsa.pub state=absent
       when: tunnel_ssh_key_state_result.stat.exists
+
+- hosts: minio
+  tags:
+    - step4
+  roles:
+    - role: 'roles/minio'
+  vars:
+    minio_config: "{{ minio.service }}"

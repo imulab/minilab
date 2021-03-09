@@ -1,0 +1,6 @@
+---
+minio_config:
+  ip: ""
+  port: 9000
+  access_key: ""
+  access_secret: ""

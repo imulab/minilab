@@ -1,0 +1,4 @@
+MINIO_ACCESS_KEY="{{ minio_config.access_key }}"
+MINIO_VOLUMES="/usr/local/share/minio/"
+MINIO_OPTS="-C /etc/minio --address {{ minio_config.ip }}:{{ minio_config.port }}"
+MINIO_SECRET_KEY="{{ minio_config.access_secret }}"

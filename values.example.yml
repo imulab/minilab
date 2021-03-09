@@ -5,6 +5,13 @@ ingress:
   ubuntu: bionic
 
 minio:
+  # Configuration of the service
+  service:
+    ip: ""
+    port: 9000
+    access_key: minio_access_key
+    access_secret: minio_access_secret
+
   # Configuration on the ingress VM for this service.
   ingress_config:
     name: minio
