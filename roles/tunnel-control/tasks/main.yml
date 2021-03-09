@@ -1,0 +1,6 @@
+---
+- name: render_tunnel_script
+  template:
+    src: tunnel.j2
+    dest: "/usr/local/bin/{{ tunnel.name }}-tunnel"
+    mode: "0744"

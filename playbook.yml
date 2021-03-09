@@ -14,6 +14,13 @@
     - step2
   roles:
     - role: 'roles/apt-source-cn'
+    - role: 'roles/tunnel-control'
+      vars:
+        tunnel:
+          name: "{{ minio.ingress_config.name }}"
+          source: "{{ minio.tunnel.source }}"
+          destination: "{{ minio.tunnel.destination }}"
+          ssh_address: "{{ ingress.address }}"
   tasks:
     # =====================================================
     # Fetch tunnel's public ssh key, generate if not exists

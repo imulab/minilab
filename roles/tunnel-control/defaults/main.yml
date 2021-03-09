@@ -1,0 +1,12 @@
+---
+tunnel:
+  # Name of the tunnel, will be used for control scripts
+  name: "foo"
+  # Source address on the ingress node
+  source: "127.0.0.1:8080"
+  # Destination service address on local LAN
+  destination: "127.0.0.1:8080"
+  # IP address of the ingress node
+  ssh_address: ""
+  # SSH user to connect with
+  ssh_user: "root"

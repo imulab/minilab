@@ -1,0 +1,20 @@
+#!/bin/bash
+
+up() {
+    ssh -M -S {{ tunnel.name }}-tunnel -fNT -R {{ tunnel.source }}:{{ tunnel.destination }} {{ tunnel.ssh_user }}@{{ tunnel.ssh_address }}
+}
+
+down () {
+    ssh -S {{ tunnel.name }}-tunnel -O exit {{ tunnel.ssh_user }}@{{ tunnel.ssh_address }}
+}
+
+status() {
+    ssh -S {{ tunnel.name }}-tunnel -O check {{ tunnel.ssh_user }}@{{ tunnel.ssh_address }}
+}
+
+if [[ $1 =~ ^(up|down|status)$ ]]; then
+  "$@"
+else
+  echo "Invalid subcommand $1, use (up|down|status)" >&2
+  exit 1
+fi
