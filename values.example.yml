@@ -1,24 +1,40 @@
 ingress:
-  # Release name for Ubuntu based operating system.
-  # Valid values are [bionic|focal]
-  # This selects the corresponding Aliyun /etc/apt/sources.list
+  # Public address for the ingress VM
+  address: "1.2.3.4"  
+  # Ubuntu flavor for the ingress VM
   ubuntu: bionic
-  # Public ip address
-  address: "114.55.144.244"  
 
 minio:
-  ingress:
-    # Public domain name for the minio service
+  # Configuration on the ingress VM for this service.
+  ingress_config:
+    name: minio
     server_name: minio.example.org
-    # Reverse proxy destination
     proxy_pass: http://localhost:9000
-    acme:
-      # Email to register for Let's encrypt
+
+    # Nginx reverse proxy conf
+    opt:
+      global: []
+        # - "ignore_invalid_headers off;"
+        # - "client_max_body_size 0;"
+        # - "proxy_buffering off;"
+      paths: {}
+        # /:
+        #   - "proxy_set_header X-Real-IP $remote_addr;"
+        #   - "proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;"
+        #   - "proxy_set_header X-Forwarded-Proto $scheme;"
+        #   - "proxy_set_header Host $http_host;"
+        #   - "proxy_connect_timeout 300;"
+        #   - "proxy_http_version 1.1;"
+        #   - "proxy_set_header Connection \"\";"
+        #   - "chunked_transfer_encoding off;"
+    
+    # Auto TLS
+    tls:
+      enabled: true
       email: foo@example.org
-  
+
+  # Configuration to connect from tunnel VM to ingress VM
   tunnel:
-    # Ingress server source, corresponds to minio.ingress.proxy_pass
-    source: ":9000"
-    # Local tunnel destination, where minio listens for LAN traffic
+    source: "127.0.0.1:9000"
     destination: "192.168.88.21:9000"
     
