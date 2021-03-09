@@ -69,6 +69,16 @@ public IP address allocated by the ISP, for more security.
 
 ### Provision
 
+```
+# fill out terraform.tfvars
+cp example.tfvars terraform.tfvars
+
+# terraform.tfvars are automatically picked up
+terraform init
+terraform plan
+terraform apply
+```
+
 ### Configuration
 
 ```
@@ -78,7 +88,7 @@ cp values.example.yml values.yml
 
 # add -l to further limit hosts
 # add -t to further select tasks by tags
-ANSIBLE_HASH_BEHAVIOUR=merge ansible-playbook playbook.yml -i hosts.ini -e @values.yml
+ANSIBLE_HASH_BEHAVIOUR=merge ansible-playbook playbook.yml -u root -i hosts.ini -e @values.yml
 ```
 
 ### Post

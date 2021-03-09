@@ -1,2 +1,6 @@
 values.yml
 hosts.ini
+terraform.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
