@@ -108,3 +108,16 @@ variable "tunnel_vm_hwaddr" {
   description = "Mac address for the tunnel VM"
   type        = string
 }
+
+# ======================
+# Minio LXC VM variables
+# ======================
+variable "minio_vm_ip" {
+  description = "IP address for the minio VM"
+  type        = string
+}
+
+variable "minio_vm_hwaddr" {
+  description = "Mac address for the minio VM"
+  type        = string
+}
