@@ -3,8 +3,15 @@ pve_password = "my_supper_secret_password"
 pve_network_gateway = "192.168.88.1"
 pve_target_node = "pve"
 
-tunnel_vm_ip = "192.168.88.11"
-tunnel_vm_hwaddr = "52:0E:4A:7F:A1:C7"
-
-minio_vm_ip = "192.168.88.21"
-minio_vm_hwaddr = "76:4B:AC:32:76:56"
+lxc = {
+    "test1" = {
+        id     = 100
+        name   = "test1"
+        cores  = 2
+        memory = 2048
+        swap   = 512
+        disk   = 32
+        ip     = "192.168.88.31"
+        hwaddr = ""
+    }
+}

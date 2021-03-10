@@ -96,6 +96,22 @@ variable "ssh_private_key_file" {
   default     = "~/.ssh/id_rsa"
 }
 
+# ============
+# Experimental
+# ============
+variable "lxc" {
+  type = map(object({
+    id     = number
+    name   = string
+    cores  = number
+    memory = number
+    swap   = number
+    disk   = number
+    ip     = string
+    hwaddr = string
+  }))
+}
+
 # =======================
 # Tunnel LXC VM variables
 # =======================
