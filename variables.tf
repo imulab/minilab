@@ -96,9 +96,9 @@ variable "ssh_private_key_file" {
   default     = "~/.ssh/id_rsa"
 }
 
-# ============
-# Experimental
-# ============
+# =========================
+# Virtual machine variables
+# =========================
 variable "lxc" {
   type = map(object({
     id     = number
@@ -112,28 +112,14 @@ variable "lxc" {
   }))
 }
 
-# =======================
-# Tunnel LXC VM variables
-# =======================
-variable "tunnel_vm_ip" {
-  description = "IP address for the tunnel VM"
-  type        = string
-}
-
-variable "tunnel_vm_hwaddr" {
-  description = "Mac address for the tunnel VM"
-  type        = string
-}
-
-# ======================
-# Minio LXC VM variables
-# ======================
-variable "minio_vm_ip" {
-  description = "IP address for the minio VM"
-  type        = string
-}
-
-variable "minio_vm_hwaddr" {
-  description = "Mac address for the minio VM"
-  type        = string
+variable "qemu" {
+  type = map(object({
+    id     = number
+    name   = string
+    clone  = string
+    cores  = number
+    memory = number
+    disk   = string
+    ip     = string
+  }))
 }

@@ -15,3 +15,15 @@ lxc = {
         hwaddr = ""
     }
 }
+
+qemu = {
+    "test2" = {
+        id = 200
+        name = "test2"
+        clone = "bionic-template"
+        cores  = 2
+        memory = 4096
+        disk = "32G"
+        ip = "192.168.88.41"
+    }
+}
