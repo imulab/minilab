@@ -63,6 +63,8 @@ public IP address allocated by the ISP, for more security.
 - [x] Download the Ubuntu LXC template.
 - [x] Download the [Ubuntu Cloud Image](https://cloud-images.ubuntu.com/bionic/) and follow [this guide](https://gist.github.com/KrustyHack/fa39e509b5736703fb4a3d664157323f) to convert it to a VM template.
 
+`qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-1` should be `qm set 9000 --scsihw virtio-scsi-pci --scsi0 local-lvm:vm-9000-disk-0`
+
 <h4>Router</h4>
 
 - [x] Configure the DHCP range of the router to `X.X.X.240 - X.X.X.254` so we can allocate the IPs before it statically.
@@ -74,6 +76,7 @@ public IP address allocated by the ISP, for more security.
 cp example.tfvars terraform.tfvars
 
 # terraform.tfvars are automatically picked up
+# use -target option to restrict scope
 terraform init
 terraform plan
 terraform apply
@@ -90,5 +93,3 @@ cp values.example.yml values.yml
 # add -t to further select tasks by tags
 ANSIBLE_HASH_BEHAVIOUR=merge ansible-playbook playbook.yml -u root -i hosts.ini -e @values.yml
 ```
-
-### Post
