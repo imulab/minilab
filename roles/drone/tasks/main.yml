@@ -1,0 +1,25 @@
+---
+- name: make_folders
+  file:
+    name: "{{ item }}"
+    state: directory
+  loop:
+    - /var/lib/drone/
+    - /etc/drone
+
+- name: render_docker_compose_file
+  template:
+    src: docker-compose.yaml.j2
+    dest: /etc/drone/docker-compose.yaml
+
+- name: upload_service_file
+  copy:
+    src: "drone.service"
+    dest: /etc/systemd/system/drone.service
+    
+- name: start_drone
+  systemd:
+    name: drone
+    enabled: yes
+    daemon-reload: yes
+    state: started

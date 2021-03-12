@@ -1,0 +1,10 @@
+---
+drone_config:
+  version: "1"
+  rpc_secret: "my_super_duper_rpc_secret"
+  github_client_id: ""
+  github_client_secret: ""
+  host: drone.example.org
+  protocol: http
+  user_create: ""
+  user_filter: ""

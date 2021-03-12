@@ -1,30 +1,23 @@
 ---
+# ================================================
+# Setup Ingress and Tunnel
+# -t ingress
+# ================================================
 - hosts: ingress
   tags: 
-    - step1
+    - stage1_1
+    - ingress
   roles:
     - role: 'roles/apt-source-cn'
     - role: 'roles/acme-reverse-proxy'
-    - role: 'roles/ingress-config'
-      vars:
-        ingress_config: "{{ minio.ingress_config }}"
-
 - hosts: tunnel
   tags:
-    - step2
+    - stage1_2
+    - ingress
   roles:
     - role: 'roles/apt-source-cn'
-    - role: 'roles/tunnel-control'
-      vars:
-        tunnel:
-          name: "{{ minio.ingress_config.name }}"
-          source: "{{ minio.tunnel.source }}"
-          destination: "{{ minio.tunnel.destination }}"
-          ssh_address: "{{ ingress.address }}"
   tasks:
-    # =====================================================
     # Fetch tunnel's public ssh key, generate if not exists
-    # =====================================================
     - name: check_if_ssh_key_pair_exists
       stat:
         path: /root/.ssh/id_rsa
@@ -39,14 +32,12 @@
         src: /root/.ssh/id_rsa.pub
         dest: /tmp/tunnel_id_rsa.pub
         flat: yes
-
 - hosts: ingress
   tags:
-    - step3
+    - stage1_3
+    - ingress
   tasks:
-    # =================================
     # Authorize tunnel's public ssh key
-    # =================================
     - name: check_if_tunnel_ssh_is_fetched
       local_action: stat path=/tmp/tunnel_id_rsa.pub  
       register: tunnel_ssh_key_state_result
@@ -62,17 +53,71 @@
       local_action: file path=/tmp/tunnel_id_rsa.pub state=absent
       when: tunnel_ssh_key_state_result.stat.exists
 
+# ================================================
+# Install Minio
+# -t minio
+# ================================================
 - hosts: minio
   tags:
-    - step4
+    - stage2_1
+    - minio
   roles:
     - role: 'roles/minio'
-  vars:
-    minio_config: "{{ minio.service }}"
+      vars:
+        minio_config: "{{ minio.service }}"
+- hosts: ingress
+  tags:
+    - stage2_2
+    - minio
+  roles:
+    - role: 'roles/ingress-config'
+      vars:
+        ingress_config: "{{ minio.ingress_config }}"
+- hosts: tunnel
+  tags:
+    - stage2_3
+    - minio
+  roles:
+    - role: 'roles/tunnel-control'
+      vars:
+        tunnel:
+          name: "{{ minio.ingress_config.name }}"
+          source: "{{ minio.tunnel.source }}"
+          destination: "{{ minio.tunnel.destination }}"
+          ssh_address: "{{ ingress.address }}"
 
+
+# ================================================
+# Install Drone
+# -t drone
+# ================================================
 - hosts: drone
   tags:
-    - step5
+    - stage3_1
+    - drone
   roles:
     - role: 'roles/apt-source-cn'
     - role: 'roles/docker'
+    - role: 'roles/drone'
+      vars:
+        drone_config: "{{ drone.service }}"
+- hosts: ingress
+  tags:
+    - stage3_2
+    - drone
+  roles:
+    - role: 'roles/ingress-config'
+      vars:
+        ingress_config: "{{ drone.ingress_config }}"
+- hosts: tunnel
+  tags:
+    - stage3_3
+    - drone
+  roles:
+    - role: 'roles/tunnel-control'
+      vars:
+        tunnel:
+          name: "{{ drone.ingress_config.name }}"
+          source: "{{ drone.tunnel.source }}"
+          destination: "{{ drone.tunnel.destination }}"
+          ssh_address: "{{ ingress.address }}"

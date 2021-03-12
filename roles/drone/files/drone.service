@@ -1,0 +1,14 @@
+[Unit]
+Description=Drone service with docker compose
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=simple
+RemainAfterExit=true
+WorkingDirectory=/etc/drone
+ExecStart=/usr/local/bin/docker-compose up -d --remove-orphans
+ExecStop=/usr/local/bin/docker-compose down
+
+[Install]
+WantedBy=multi-user.target
