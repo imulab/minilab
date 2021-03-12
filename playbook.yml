@@ -69,3 +69,10 @@
     - role: 'roles/minio'
   vars:
     minio_config: "{{ minio.service }}"
+
+- hosts: drone
+  tags:
+    - step5
+  roles:
+    - role: 'roles/apt-source-cn'
+    - role: 'roles/docker'

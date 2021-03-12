@@ -45,3 +45,5 @@ minio:
     source: "127.0.0.1:9000"
     destination: "192.168.88.21:9000"
     
+docker:
+  accelerator: https://n94golf1.mirror.aliyuncs.com

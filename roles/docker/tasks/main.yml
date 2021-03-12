@@ -1,0 +1,60 @@
+---
+- name: remove_previous_installation
+  apt:
+    name: "{{ item }}"
+    state: absent
+  loop:
+    - docker
+    - docker-engine
+    - docker.io
+    - containerd
+    - runc
+
+- name: add_gpg_key
+  apt_key:
+    url: "{{ docker.gpg }}"
+    state: present
+
+- name: add_apt_repository
+  apt_repository:
+    repo: "deb [arch=amd64] {{ docker.apt }} bionic stable"
+    state: present
+
+- name: update_apt_cache
+  apt:
+    update_cache: yes
+
+- name: install_docker
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+
+- name: make_config_folder
+  file:
+    path: /etc/docker/
+    state: directory
+
+- name: configure_accelerator
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+
+- name: start_docker
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: download_docker_compose
+  get_url:
+    url: "{{ docker.compose }}"
+    dest: /usr/local/bin/docker-compose
+
+- name: make_docker_compose_executable
+  file: 
+    name: /usr/local/bin/docker-compose
+    mode: "0755"
